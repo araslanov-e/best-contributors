@@ -1,5 +1,11 @@
 require "roda"
 
+require 'net/http'
+require 'json'
+
+require_relative './models/repository.rb'
+require_relative './presenters/repository_presenter.rb'
+
 class BestContributors < Roda
   plugin :render, engine: 'slim'
 
@@ -9,7 +15,9 @@ class BestContributors < Roda
     end
 
     r.get 'search' do
-      @repository_url = r.params['repository_url']
+      @repository = Repository.new(r.params['repository_url'])
+      @repository_presenter = RepositoryPresenter.new(@repository)
+
       view('search')
     end
   end

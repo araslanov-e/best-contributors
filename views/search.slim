@@ -1,6 +1,11 @@
-h1 Result
+h1 Best contributors
 
-p= @repository_url
+- if @repository_presenter.repository_valid?
+  - @repository_presenter.best_contributors.each do |contributor|
+    p= contributor['login']
+- else
+  p Repository invalid, try again.
+  == render 'form'
 
 p
   a href='/' Home
