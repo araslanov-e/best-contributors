@@ -1,5 +1,12 @@
-# Best cotribute
+# Best contributors
 ## Setup
 
     $ bundle
-    $ rackup -p 9292 config.ru
+
+## Run
+
+    $ puma
+
+## Testing
+
+    $ rspec

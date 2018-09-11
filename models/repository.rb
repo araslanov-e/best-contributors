@@ -41,6 +41,6 @@ class Repository
   private
 
   def match_repository
-    @match_repository ||= @repository_url.match(/.*github.com\/(?<owner>\w*)\/(?<repo>\w*)\/?/) || {}
+    @match_repository ||= @repository_url.match(/.*github.com\/(?<owner>[-\w.]*)\/(?<repo>[-\w.]*)\/?/) || {}
   end
 end

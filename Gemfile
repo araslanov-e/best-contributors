@@ -8,3 +8,10 @@ gem 'roda'
 gem 'slim'
 gem 'prawn'
 gem 'rubyzip'
+
+group :test do
+  gem 'rack-test'
+  gem 'rspec'
+  gem 'webmock'
+  gem 'pry-byebug'
+end

@@ -33,7 +33,7 @@ class BestContributors < Roda
       FoldersCreator.call("#{public_folder_path}/#{files_folder_path}")
       
       files = PdfGenerator.new(public_folder_path, files_folder_path).generate(@repository.best_contributors)
-      @zip_file_info = ZipGenerator.new(public_folder_path, files_folder_path).generate(files)
+      @zip_file_info = ZipGenerator.new(public_folder_path, files_folder_path).generate('best_contributors', files)
 
       view('search')
     end
