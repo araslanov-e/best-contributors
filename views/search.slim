@@ -1,11 +1,22 @@
 h1 Best contributors
 
-- if @repository_presenter.repository_valid?
-  - @repository_presenter.best_contributors.each do |contributor|
-    p= contributor['login']
+- if @repository.valid?
+  h2
+    = @repository.owner
+    |/
+    = @repository.repo
+
+  ol
+    - @repository.best_contributors.each do |contributor|
+      li
+        = contributor['login']
+        |&nbsp;
+        a href="#{contributor['pdf_path']}" target='_blank' download pdf
+
+  - if @zip_file_info
+    a href=@zip_file_info[:path] download zip (#{@zip_file_info[:files_counts]})
 - else
   p Repository invalid, try again.
   == render 'form'
 
-p
-  a href='/' Home
+== render 'shared/home_link'

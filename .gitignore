@@ -1,1 +1,3 @@
 .ruby-*
+public/**/*
+!public/.gitkeep

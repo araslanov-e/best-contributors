@@ -15,7 +15,13 @@ class Repository
     @owner ||= match_repository[:owner].to_s
   end
 
+  def path
+    "#{owner}/#{repo}" if valid?
+  end
+
   def contributors
+    return [] unless valid?
+
     @contributors ||= begin
       uri = URI("https://api.github.com/repos/#{owner}/#{repo}/contributors")
 
@@ -26,6 +32,10 @@ class Repository
 
       response.code.to_i == 200 ? JSON.parse(response.body) : []
     end
+  end
+
+  def best_contributors(max_contributors = 3)
+    contributors.first(max_contributors)
   end
 
   private
