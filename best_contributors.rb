@@ -6,7 +6,6 @@ require 'prawn'
 require 'zip'
 
 require_relative './models/repository.rb'
-require_relative './services/folders_creator.rb'
 require_relative './services/pdf_generator.rb'
 require_relative './services/zip_generator.rb'
 
@@ -27,13 +26,14 @@ class BestContributors < Roda
     r.get 'search' do
       @repository = Repository.new(r.params['repository_url'])
 
-      public_folder_path = opts[:public_root]
-      files_folder_path = "files/#{@repository.path}"
-
-      FoldersCreator.call("#{public_folder_path}/#{files_folder_path}")
+      root_path = opts[:public_root]
+      files_storage_path = "files/#{@repository.path}"
+      FileUtils.mkdir_p("#{root_path}/#{files_storage_path}")
       
-      files = PdfGenerator.new(public_folder_path, files_folder_path).generate(@repository.best_contributors)
-      @zip_file_info = ZipGenerator.new(public_folder_path, files_folder_path).generate('best_contributors', files)
+      @contributors_pdf_files = PdfGenerator.(@repository.best_contributors, root_path, files_storage_path)
+
+      files_for_archive = @contributors_pdf_files.values.map { |file_info| file_info[:full_file_path] }
+      @zip_file_info = ZipGenerator.('best_contributors', files_for_archive, root_path, files_storage_path)
 
       view('search')
     end

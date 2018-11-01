@@ -2,28 +2,26 @@ require 'zip'
 require_relative '../../services/zip_generator'
 
 describe ZipGenerator do
-  describe '#generate' do
+  describe '.call' do
     let(:current_path) { File.dirname(__FILE__) }
     let(:folder_path) { '../../public' }
-    let(:zip_file_name) { 'best_contributors' }
-    let(:zip_file) { "#{zip_file_name}.zip" }
-    let(:zip_file_path) { [current_path, folder_path, zip_file].join('/') }
+    let(:file_name) { 'best_contributors' }
+    let(:file) { "#{file_name}.zip" }
+    let(:file_path) { [current_path, folder_path, file].join('/') }
 
-    let(:file) { [current_path, '../../spec', 'fixtures', 'example.pdf'].join('/') }
-    let(:files) { [file] }
-
-    let(:zip_generator) { described_class.new(current_path, folder_path) }
+    let(:file_for_archive) { [current_path, '../../spec', 'fixtures', 'example.pdf'].join('/') }
+    let(:files_for_archive) { [file_for_archive] }
 
     after do
-      File.delete(zip_file_path) if File.exist?(zip_file_path)
+      File.delete(file_path) if File.exist?(file_path)
     end
 
     it 'create zip file' do
-      expect(File.exist?(zip_file_path)).to be_falsey
+      expect(File.exist?(file_path)).to be_falsey
       
-      zip_file_info = zip_generator.generate(zip_file_name, files)
+      zip_file_info = described_class.(file_name, files_for_archive, current_path, folder_path)
 
-      expect(File.exist?(zip_file_path)).to be_truthy
+      expect(File.exist?(file_path)).to be_truthy
       expect(zip_file_info[:files_counts]).to eq(1)
     end
   end

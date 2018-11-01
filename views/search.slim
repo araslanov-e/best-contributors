@@ -10,8 +10,9 @@ h1 Best contributors
     - @repository.best_contributors.each do |contributor|
       li
         = contributor['login']
-        |&nbsp;
-        a href="#{contributor['pdf_path']}" target='_blank' download pdf
+        - if @contributors_pdf_files[contributor['login']]
+          |&nbsp;
+          a href="#{@contributors_pdf_files[contributor['login']][:file_path]}" target='_blank' download pdf
 
   - if @zip_file_info
     a href=@zip_file_info[:path] download zip (#{@zip_file_info[:files_counts]})
